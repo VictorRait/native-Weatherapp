@@ -3,11 +3,11 @@ import { View, Text, SafeAreaView, StyleSheet } from 'react-native'
 import { Feather } from '@expo/vector-icons'
 import RowText from '../components/RowText'
 import { weatherType } from '../utilities/WeatherType'
-const CurrentWeather = () => {
+const CurrentWeather = ({weatherData}) => {
   const {
     wrapper,
     container,
-    temp,
+    tempStyles,
     feels,
     highLowWrapper,
     highLow,
@@ -15,24 +15,27 @@ const CurrentWeather = () => {
     description,
     message
   } = styles
-  return (
-    <SafeAreaView style={wrapper}>
-      <View style={container}>
-        <Feather name="sun" size={100} color="black" />
+  const { main: { temp, feels_like, temp_max, temp_min }, weather } = weatherData
+  const weatherCondition = weather[0]?.main
 
-        <Text style={temp}>6</Text>
-        <Text style={feels}>Feels like 5</Text>
+  return (
+    <SafeAreaView style={[wrapper, {backgroundColor: weatherType[weatherCondition].backgroundColor}]}>
+      <View style={container}>
+        <Feather name={weatherType[weatherCondition]?.icon} size={100} color="white" />
+
+        <Text style={tempStyles}>{`${temp}°`}</Text>
+        <Text style={feels}>{`Feels like ${feels_like}`}</Text>
         <RowText
-          messageOne={'High: 8'}
-          messageTwo={'Low:6'}
+          messageOne={`High: ${temp_max}°`}
+          messageTwo={`Low: ${temp_min}°`}
           containerStyle={highLowWrapper}
           messageOneStyles={highLow}
           messageTwoStyles={highLow}
         />
       </View>
       <RowText
-        messageOne={'Its sunny'}
-        messageTwo={'Its perfect t-shirt weather'}
+        messageOne={weather[0]?.description}
+        messageTwo={weatherType[weatherCondition]?.message}
         containerStyle={bodyWrapper}
         messageOneStyles={description}
         messageTwoStyles={message}
@@ -42,7 +45,6 @@ const CurrentWeather = () => {
 }
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'pink',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
@@ -50,18 +52,20 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     backgroundColor: 'pink',
-    padding: 5
+    padding: 5,
+    paddingBottom:30
+  
   },
-  temp: {
-    color: 'black',
+  tempStyles: {
+    color: 'white',
     fontSize: 48
   },
   feels: {
-    color: 'black',
+    color: 'white',
     fontSize: 30
   },
   highLow: {
-    color: 'black',
+    color: 'white',
     fontSize: 20
   },
   highLowWrapper: {
@@ -69,13 +73,19 @@ const styles = StyleSheet.create({
   },
   bodyWrapper: {
     justifyContent: 'flex-start',
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
+  
   },
   description: {
-    fontSize: 48
+    fontSize: 30,
+    color: 'white',
+    textAlign: 'center',
+    textTransform:'uppercase'
   },
   message: {
-    fontSize: 30
+    fontSize: 20,
+    color: 'lightgray',
+    textAlign:'center'
   }
 })
 export default CurrentWeather
