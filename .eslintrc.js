@@ -13,7 +13,7 @@ module.exports = {
     ecmaVersion: 2023,
     sourceType: 'module'
   },
-  plugins: ['react'],
+  plugins: ['react', 'prettier'],
   rules: {
     semi: ['error', 'never'],
     'comma-dangle': ['error', 'never'],

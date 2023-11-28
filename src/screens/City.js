@@ -7,7 +7,8 @@ import {
 } from 'react-native'
 import { Feather } from '@expo/vector-icons'
 import IconText from '../components/IconText'
-function City() {
+import moment from 'moment'
+function City({weatherData}) {
   const {
     container,
     imageLayout,
@@ -19,6 +20,7 @@ function City() {
     riseSetText,
     rowLayout
   } = styles
+  const {name, country, population, sunrise, sunset} = weatherData
   return (
     <SafeAreaView style={container}>
       <ImageBackground
@@ -26,13 +28,13 @@ function City() {
         source={require('../../assets/city.jpg')}
       >
         <View style={styles.overlayView} />
-        <Text style={(cityName, cityText)}>London</Text>
-        <Text style={(countryName, cityText)}>UK</Text>
+        <Text style={(cityName, cityText)}>{name}</Text>
+        <Text style={(countryName, cityText)}>{country}</Text>
         <View style={[populationWrapper, rowLayout]}>
           <IconText
             iconName={'user'}
             iconColor={'red'}
-            bodyText={'8000'}
+            bodyText={`Population: ${population}`}
             bodyTextStyles={styles.populationText}
           />
         </View>
@@ -40,13 +42,13 @@ function City() {
           <IconText
             iconName={'sunrise'}
             iconColor={'white'}
-            bodyText={'10:46:58am'}
+            bodyText={moment(sunrise).format('h:mm:ss a')}
             bodyTextStyles={riseSetText}
           />
           <IconText
             iconName={'sunset'}
             iconColor={'white'}
-            bodyText={'17:28:15pm'}
+            bodyText={moment(sunset).format('h:mm:ss a')}
             bodyTextStyles={riseSetText}
           />
         </View>

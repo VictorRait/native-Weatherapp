@@ -7,42 +7,22 @@ import {
 } from 'react-native'
 
 import ListItem from '../components/ListItem'
-const DATA = [
-  {
-    dt_text: '2023-02-18 12:00:00',
-    main: {
-      temp_max: 8.55,
-      temp_min: 7.55
-    },
-    weather: [{ main: 'Clear' }]
-  },
-  {
-    dt_text: '2023-02-18 15:00:00',
-    main: {
-      temp_max: 8.55,
-      temp_min: 7.55
-    },
-    weather: [{ main: 'Clouds' }]
-  },
-  {
-    dt_text: '2023-02-18 18:00:00',
-    main: {
-      temp_max: 8.55,
-      temp_min: 7.55
-    },
-    weather: [{ main: 'Rain' }]
-  }
-]
 
-const UpcomingWeather = () => {
-  const renderItem = ({ item }) => (
-    <ListItem
-      condition={item.weather[0].main}
-      dt_txt={item.dt_text}
-      min={item.main.temp_min}
-      max={item.main.temp_max}
-    />
-  )
+
+const UpcomingWeather = ({ weatherData }) => {
+
+  const renderItem = ({item}) => {
+     
+    return <ListItem 
+    key={item.dt}
+    condition={item.weather[0].main}
+    dt_txt={item.dt_txt}
+    min={item.main.temp_min}
+    max={item.main.temp_max}
+  />
+  }
+
+  
   const { container, image } = styles
   return (
     <SafeAreaView style={container}>
@@ -50,9 +30,9 @@ const UpcomingWeather = () => {
         source={require('../../assets/thunderstorm.jpg')}
         style={image}
       >
-        <Text>UpcomingWeather</Text>
+   
         <FlatList
-          data={DATA}
+          data={weatherData}
           renderItem={renderItem}
           keyExtractor={(item) => item.dt_text}
         />
